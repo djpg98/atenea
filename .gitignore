@@ -1,0 +1,30 @@
+# Documentation (se commitea por separado en forma curada)
+documentation/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+backend/.venv/
+
+# Environment variables
+backend/.env
+
+# Django
+backend/*.sqlite3
+
+# Node / Next.js (frontend, cuando se agregue)
+frontend/node_modules/
+frontend/.next/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+# macOS
+.DS_Store
