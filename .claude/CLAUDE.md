@@ -58,8 +58,8 @@ Cada app sigue esta estructura de carpetas:
 
 ## Reglas del código Django
 
-### 1. Modelos solo en repositorios
-Los modelos solo deben ser importados en repositorios y, si fuera necesario, en forms. Ninguna otra capa importa modelos directamente.
+### 1. Modelos solo en repositorios y serializers
+Los modelos solo deben ser importados en repositorios, serializers y, si fuera necesario, en forms. Ninguna otra capa importa modelos directamente.
 
 ### 2. FKs con patrón string
 Al declarar una ForeignKey (u otras relaciones) en un modelo, usar siempre el patrón de string en lugar de importar la clase:
@@ -119,6 +119,40 @@ Se sigue PEP 8 como estándar base. Resumen de las convenciones aplicables:
 
 ### Regla obligatoria
 **Todos los nombres** (clases, funciones, variables, métodos, módulos, constantes) deben estar **en inglés**, sin excepción.
+
+---
+
+## Type hints
+
+Se usa type hinting estricto en todas las capas. Todos los métodos y funciones deben declarar tipos en parámetros y valor de retorno.
+
+### Repositorios y serializers
+Importan modelos directamente (permitido por las reglas), por lo que pueden usar los tipos de modelo sin restricción:
+
+```python
+from photography.models import Photo
+
+class PhotoRepository:
+    def get_by_id(self, photo_id: int) -> Photo:
+        ...
+```
+
+### Servicios y vistas
+No deben importar modelos en runtime. Para tipar retornos o parámetros que son instancias de modelo, usar `TYPE_CHECKING`:
+
+```python
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from photography.models import Photo
+
+class PhotoService:
+    def get_by_id(self, photo_id: int) -> Photo:
+        ...
+```
+
+`from __future__ import annotations` hace que todas las anotaciones sean evaluadas de forma lazy, por lo que el tipo `Photo` en la firma no genera un import en runtime. El bloque `TYPE_CHECKING` solo se ejecuta cuando herramientas de análisis estático (mypy, Pylance) procesan el archivo.
 
 ---
 
