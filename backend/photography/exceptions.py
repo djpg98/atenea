@@ -1,0 +1,2 @@
+class PhotoNotFound(Exception):
+    pass

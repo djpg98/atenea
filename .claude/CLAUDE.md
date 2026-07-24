@@ -75,7 +75,22 @@ registry = models.ForeignKey(ResourceRegistry, on_delete=models.CASCADE)
 
 Esto evita imports circulares y mantiene el acoplamiento bajo entre apps.
 
-### 3. Transacciones en operaciones que afectan ResourceRegistry
+### 3. Excepciones personalizadas por app
+Cada app expone sus propias excepciones en `<app>/exceptions.py`. Los repositorios capturan excepciones de Django (como `Model.DoesNotExist`) internamente y lanzan la excepción propia correspondiente. Servicios y vistas solo importan excepciones, nunca modelos directamente.
+
+```python
+# core/exceptions.py
+class ResourceRegistryNotFound(Exception):
+    pass
+
+# En el repositorio (único lugar donde se importa el modelo):
+try:
+    return ResourceRegistry.objects.get(id=registry_id)
+except ResourceRegistry.DoesNotExist:
+    raise ResourceRegistryNotFound(...)
+```
+
+### 4. Transacciones en operaciones que afectan ResourceRegistry
 Cualquier operación que modifique tanto `ResourceRegistry` como el recurso específico (Photo, Movie, etc.) debe ejecutarse dentro de una transacción atómica. Esto incluye creación y cualquier modificación que afecte ambas tablas.
 
 ```python
