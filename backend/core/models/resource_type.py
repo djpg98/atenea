@@ -16,5 +16,5 @@ class ResourceType(models.Model):
     class Meta:
         db_table = 'resource_type'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name} ({self.area})"

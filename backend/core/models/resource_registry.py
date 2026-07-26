@@ -9,5 +9,5 @@ class ResourceRegistry(models.Model):
     class Meta:
         db_table = 'resource_registry'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Resource {self.id} ({self.resource_type})"

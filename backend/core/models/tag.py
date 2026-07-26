@@ -7,5 +7,5 @@ class Tag(models.Model):
     class Meta:
         db_table = 'tag'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name

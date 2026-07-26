@@ -18,5 +18,5 @@ class Photo(models.Model):
     class Meta:
         db_table = 'photo'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title or f"Photo {self.id}"
