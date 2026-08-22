@@ -53,4 +53,4 @@ class ResourceTypeDetailView(APIView):
 
     def delete(self, request: Request, resource_type_id: int) -> Response:
         self._service.delete(resource_type_id=resource_type_id)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_200_OK)

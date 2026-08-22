@@ -53,4 +53,4 @@ class ArtistDetailView(APIView):
 
     def delete(self, request: Request, artist_id: int) -> Response:
         self._service.delete(artist_id=artist_id)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_200_OK)

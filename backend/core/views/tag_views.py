@@ -53,4 +53,4 @@ class TagDetailView(APIView):
 
     def delete(self, request: Request, tag_id: int) -> Response:
         self._service.delete(tag_id=tag_id)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_200_OK)

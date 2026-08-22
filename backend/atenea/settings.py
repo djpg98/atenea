@@ -76,6 +76,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'atenea.wsgi.application'
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'core.renderers.EnvelopeJSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'EXCEPTION_HANDLER': 'core.exception_handlers.envelope_exception_handler',
+}
+
+
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
