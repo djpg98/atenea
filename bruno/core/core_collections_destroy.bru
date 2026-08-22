@@ -1,0 +1,60 @@
+meta {
+  name: core_collections_destroy
+  type: http
+  seq: 10
+  tags: [
+    core
+  ]
+}
+
+delete {
+  url: {{url}}/{{version}}/core/collections/:collection_id/
+  body: none
+  auth: apikey
+}
+
+params:path {
+  collection_id: 
+}
+
+headers {
+  sessionid: {{apiKey}}
+}
+
+auth:apikey {
+  key: sessionid
+  value: {{apiKey}}
+  placement: header
+}
+
+example {
+  name: 204 Response
+  description: No response body
+  
+  request: {
+    url: {{url}}/{{version}}/core/collections/:collection_id/
+    method: DELETE
+    mode: none
+    params:path: {
+      collection_id: 
+    }
+  
+    headers: {
+      sessionid: {{apiKey}}
+    }
+  }
+  
+  response: {
+    status: {
+      code: 204
+      text: No Content
+    }
+  
+    body: {
+      type: text
+      content: '''
+  
+      '''
+    }
+  }
+}
