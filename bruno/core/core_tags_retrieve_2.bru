@@ -1,0 +1,60 @@
+meta {
+  name: core_tags_retrieve_2
+  type: http
+  seq: 13
+  tags: [
+    core
+  ]
+}
+
+get {
+  url: {{url}}/{{version}}/core/tags/:tag_id/
+  body: none
+  auth: apikey
+}
+
+params:path {
+  tag_id: 
+}
+
+headers {
+  sessionid: {{apiKey}}
+}
+
+auth:apikey {
+  key: sessionid
+  value: {{apiKey}}
+  placement: header
+}
+
+example {
+  name: 200 Response
+  description: No response body
+  
+  request: {
+    url: {{url}}/{{version}}/core/tags/:tag_id/
+    method: GET
+    mode: none
+    params:path: {
+      tag_id: 
+    }
+  
+    headers: {
+      sessionid: {{apiKey}}
+    }
+  }
+  
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: text
+      content: '''
+  
+      '''
+    }
+  }
+}

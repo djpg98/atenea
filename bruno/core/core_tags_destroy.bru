@@ -1,0 +1,60 @@
+meta {
+  name: core_tags_destroy
+  type: http
+  seq: 15
+  tags: [
+    core
+  ]
+}
+
+delete {
+  url: {{url}}/{{version}}/core/tags/:tag_id/
+  body: none
+  auth: apikey
+}
+
+params:path {
+  tag_id: 
+}
+
+headers {
+  sessionid: {{apiKey}}
+}
+
+auth:apikey {
+  key: sessionid
+  value: {{apiKey}}
+  placement: header
+}
+
+example {
+  name: 204 Response
+  description: No response body
+  
+  request: {
+    url: {{url}}/{{version}}/core/tags/:tag_id/
+    method: DELETE
+    mode: none
+    params:path: {
+      tag_id: 
+    }
+  
+    headers: {
+      sessionid: {{apiKey}}
+    }
+  }
+  
+  response: {
+    status: {
+      code: 204
+      text: No Content
+    }
+  
+    body: {
+      type: text
+      content: '''
+  
+      '''
+    }
+  }
+}

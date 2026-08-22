@@ -1,0 +1,52 @@
+meta {
+  name: core_artists_retrieve
+  type: http
+  seq: 1
+  tags: [
+    core
+  ]
+}
+
+get {
+  url: {{url}}/{{version}}/core/artists/
+  body: none
+  auth: apikey
+}
+
+headers {
+  sessionid: {{apiKey}}
+}
+
+auth:apikey {
+  key: sessionid
+  value: {{apiKey}}
+  placement: header
+}
+
+example {
+  name: 200 Response
+  description: No response body
+  
+  request: {
+    url: {{url}}/{{version}}/core/artists/
+    method: GET
+    mode: none
+    headers: {
+      sessionid: {{apiKey}}
+    }
+  }
+  
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: text
+      content: '''
+  
+      '''
+    }
+  }
+}

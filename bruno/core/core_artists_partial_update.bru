@@ -1,0 +1,60 @@
+meta {
+  name: core_artists_partial_update
+  type: http
+  seq: 4
+  tags: [
+    core
+  ]
+}
+
+patch {
+  url: {{url}}/{{version}}/core/artists/:artist_id/
+  body: none
+  auth: apikey
+}
+
+params:path {
+  artist_id: 
+}
+
+headers {
+  sessionid: {{apiKey}}
+}
+
+auth:apikey {
+  key: sessionid
+  value: {{apiKey}}
+  placement: header
+}
+
+example {
+  name: 200 Response
+  description: No response body
+  
+  request: {
+    url: {{url}}/{{version}}/core/artists/:artist_id/
+    method: PATCH
+    mode: none
+    params:path: {
+      artist_id: 
+    }
+  
+    headers: {
+      sessionid: {{apiKey}}
+    }
+  }
+  
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: text
+      content: '''
+  
+      '''
+    }
+  }
+}

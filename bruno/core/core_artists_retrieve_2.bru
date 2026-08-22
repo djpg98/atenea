@@ -1,0 +1,60 @@
+meta {
+  name: core_artists_retrieve_2
+  type: http
+  seq: 3
+  tags: [
+    core
+  ]
+}
+
+get {
+  url: {{url}}/{{version}}/core/artists/:artist_id/
+  body: none
+  auth: apikey
+}
+
+params:path {
+  artist_id: 
+}
+
+headers {
+  sessionid: {{apiKey}}
+}
+
+auth:apikey {
+  key: sessionid
+  value: {{apiKey}}
+  placement: header
+}
+
+example {
+  name: 200 Response
+  description: No response body
+  
+  request: {
+    url: {{url}}/{{version}}/core/artists/:artist_id/
+    method: GET
+    mode: none
+    params:path: {
+      artist_id: 
+    }
+  
+    headers: {
+      sessionid: {{apiKey}}
+    }
+  }
+  
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: text
+      content: '''
+  
+      '''
+    }
+  }
+}

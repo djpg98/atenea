@@ -1,0 +1,60 @@
+meta {
+  name: photography_photos_retrieve
+  type: http
+  seq: 2
+  tags: [
+    photography
+  ]
+}
+
+get {
+  url: {{url}}/{{version}}/photography/photos/:photo_id/
+  body: none
+  auth: apikey
+}
+
+params:path {
+  photo_id: 
+}
+
+headers {
+  sessionid: {{apiKey}}
+}
+
+auth:apikey {
+  key: sessionid
+  value: {{apiKey}}
+  placement: header
+}
+
+example {
+  name: 200 Response
+  description: No response body
+  
+  request: {
+    url: {{url}}/{{version}}/photography/photos/:photo_id/
+    method: GET
+    mode: none
+    params:path: {
+      photo_id: 
+    }
+  
+    headers: {
+      sessionid: {{apiKey}}
+    }
+  }
+  
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: text
+      content: '''
+  
+      '''
+    }
+  }
+}
