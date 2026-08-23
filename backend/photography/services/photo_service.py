@@ -6,9 +6,10 @@ from django.db import transaction
 
 from core.services.resource_registry_service import ResourceRegistryService
 from core.services.artist_service import ArtistService
+from core.services.resource_tag_service import ResourceTagService
+from core.utils.reconciliation import reconcile_ids
 from photography.repositories.photo_repository import PhotoRepository
 from photography.repositories.photo_artist_repository import PhotoArtistRepository
-from photography.utils.artist_reconciliation import reconcile_artist_ids
 
 if TYPE_CHECKING:
     from photography.models import Photo
@@ -20,6 +21,7 @@ class PhotoService:
         self._photo_artist_repository = PhotoArtistRepository()
         self._registry_service = ResourceRegistryService()
         self._artist_service = ArtistService()
+        self._resource_tag_service = ResourceTagService()
 
     def create(
         self,
@@ -27,6 +29,7 @@ class PhotoService:
         reference: str,
         reference_type: str,
         artist_ids: list[int] | None = None,
+        tag_ids: list[int] | None = None,
         **kwargs: Any,
     ) -> Photo:
         with transaction.atomic():
@@ -42,18 +45,26 @@ class PhotoService:
                 for artist_id in unique_artist_ids:
                     self._artist_service.get_by_id(artist_id=artist_id)
                 self._photo_artist_repository.bulk_create(photo_id=photo.id, artist_ids=unique_artist_ids)
+            if tag_ids:
+                self._resource_tag_service.add_tags(registry_id=registry.id, tag_ids=tag_ids)
             return photo
 
     def get_by_id(self, photo_id: int) -> Photo:
         return self._photo_repository.get_by_id(photo_id=photo_id)
 
-    def update(self, photo_id: int, artist_ids: list[int] | None = None, **kwargs: Any) -> Photo:
+    def update(
+        self,
+        photo_id: int,
+        artist_ids: list[int] | None = None,
+        tag_ids: list[int] | None = None,
+        **kwargs: Any,
+    ) -> Photo:
         with transaction.atomic():
             photo = self._photo_repository.update(photo_id=photo_id, **kwargs)
 
             if artist_ids is not None:
                 current_artist_ids = self._photo_artist_repository.list_artist_ids_by_photo(photo_id=photo_id)
-                to_add, to_remove = reconcile_artist_ids(current_artist_ids, artist_ids)
+                to_add, to_remove = reconcile_ids(current_artist_ids, artist_ids)
 
                 for artist_id in to_add:
                     self._artist_service.get_by_id(artist_id=artist_id)
@@ -62,6 +73,9 @@ class PhotoService:
                     self._photo_artist_repository.bulk_create(photo_id=photo_id, artist_ids=list(to_add))
                 if to_remove:
                     self._photo_artist_repository.bulk_delete(photo_id=photo_id, artist_ids=list(to_remove))
+
+            if tag_ids is not None:
+                self._resource_tag_service.reconcile_tags(registry_id=photo.registry_id, tag_ids=tag_ids)
 
             return photo
 

@@ -6,7 +6,7 @@ from rest_framework import status
 from photography.services.photo_service import PhotoService
 from photography.serializers.photo_serializer import PhotoCreateSerializer, PhotoUpdateSerializer, PhotoSerializer
 from photography.exceptions import PhotoNotFound
-from core.exceptions import ArtistNotFound
+from core.exceptions import ArtistNotFound, TagNotFound
 
 
 class PhotoListCreateView(APIView):
@@ -24,6 +24,7 @@ class PhotoListCreateView(APIView):
         reference = data.pop('reference')
         reference_type = data.pop('reference_type')
         artist_ids = data.pop('artist_ids', None)
+        tag_ids = data.pop('tag_ids', None)
 
         try:
             photo = self._service.create(
@@ -31,10 +32,13 @@ class PhotoListCreateView(APIView):
                 reference=reference,
                 reference_type=reference_type,
                 artist_ids=artist_ids,
+                tag_ids=tag_ids,
                 **data
             )
         except ArtistNotFound:
             return Response({'error': 'One or more artists not found'}, status=status.HTTP_404_NOT_FOUND)
+        except TagNotFound:
+            return Response({'error': 'One or more tags not found'}, status=status.HTTP_404_NOT_FOUND)
 
         return Response(PhotoSerializer(photo).data, status=status.HTTP_201_CREATED)
 
@@ -59,12 +63,15 @@ class PhotoDetailView(APIView):
 
         data = serializer.validated_data
         artist_ids = data.pop('artist_ids', None)
+        tag_ids = data.pop('tag_ids', None)
 
         try:
-            photo = self._service.update(photo_id=photo_id, artist_ids=artist_ids, **data)
+            photo = self._service.update(photo_id=photo_id, artist_ids=artist_ids, tag_ids=tag_ids, **data)
         except PhotoNotFound:
             return Response({'error': 'Photo not found'}, status=status.HTTP_404_NOT_FOUND)
         except ArtistNotFound:
             return Response({'error': 'One or more artists not found'}, status=status.HTTP_404_NOT_FOUND)
+        except TagNotFound:
+            return Response({'error': 'One or more tags not found'}, status=status.HTTP_404_NOT_FOUND)
 
         return Response(PhotoSerializer(photo).data)
