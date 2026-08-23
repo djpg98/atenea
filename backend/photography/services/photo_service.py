@@ -8,6 +8,7 @@ from core.services.resource_registry_service import ResourceRegistryService
 from core.services.artist_service import ArtistService
 from photography.repositories.photo_repository import PhotoRepository
 from photography.repositories.photo_artist_repository import PhotoArtistRepository
+from photography.utils.artist_reconciliation import reconcile_artist_ids
 
 if TYPE_CHECKING:
     from photography.models import Photo
@@ -46,8 +47,23 @@ class PhotoService:
     def get_by_id(self, photo_id: int) -> Photo:
         return self._photo_repository.get_by_id(photo_id=photo_id)
 
-    def update(self, photo_id: int, **kwargs: Any) -> Photo:
-        return self._photo_repository.update(photo_id=photo_id, **kwargs)
+    def update(self, photo_id: int, artist_ids: list[int] | None = None, **kwargs: Any) -> Photo:
+        with transaction.atomic():
+            photo = self._photo_repository.update(photo_id=photo_id, **kwargs)
+
+            if artist_ids is not None:
+                current_artist_ids = self._photo_artist_repository.list_artist_ids_by_photo(photo_id=photo_id)
+                to_add, to_remove = reconcile_artist_ids(current_artist_ids, artist_ids)
+
+                for artist_id in to_add:
+                    self._artist_service.get_by_id(artist_id=artist_id)
+
+                if to_add:
+                    self._photo_artist_repository.bulk_create(photo_id=photo_id, artist_ids=list(to_add))
+                if to_remove:
+                    self._photo_artist_repository.bulk_delete(photo_id=photo_id, artist_ids=list(to_remove))
+
+            return photo
 
     def delete(self, photo_id: int) -> None:
         registry_id = self._photo_repository.get_registry_id(photo_id=photo_id)

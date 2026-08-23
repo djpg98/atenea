@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from photography.services.photo_service import PhotoService
-from photography.serializers.photo_serializer import PhotoCreateSerializer, PhotoSerializer
+from photography.serializers.photo_serializer import PhotoCreateSerializer, PhotoUpdateSerializer, PhotoSerializer
 from photography.exceptions import PhotoNotFound
 from core.exceptions import ArtistNotFound
 
@@ -49,5 +49,22 @@ class PhotoDetailView(APIView):
             photo = self._service.get_by_id(photo_id=photo_id)
         except PhotoNotFound:
             return Response({'error': 'Photo not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(PhotoSerializer(photo).data)
+
+    def patch(self, request: Request, photo_id: int) -> Response:
+        serializer = PhotoUpdateSerializer(data=request.data, partial=True)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        data = serializer.validated_data
+        artist_ids = data.pop('artist_ids', None)
+
+        try:
+            photo = self._service.update(photo_id=photo_id, artist_ids=artist_ids, **data)
+        except PhotoNotFound:
+            return Response({'error': 'Photo not found'}, status=status.HTTP_404_NOT_FOUND)
+        except ArtistNotFound:
+            return Response({'error': 'One or more artists not found'}, status=status.HTTP_404_NOT_FOUND)
 
         return Response(PhotoSerializer(photo).data)

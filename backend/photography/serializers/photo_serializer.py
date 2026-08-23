@@ -14,6 +14,14 @@ class PhotoCreateSerializer(serializers.ModelSerializer):
         ]
 
 
+class PhotoUpdateSerializer(serializers.ModelSerializer):
+    artist_ids = serializers.ListField(child=serializers.IntegerField(), required=False)
+
+    class Meta:
+        model = Photo
+        fields = ['artist_ids', 'reference', 'reference_type', 'title', 'year', 'iso', 'lens', 'camera']
+
+
 class PhotoSerializer(serializers.ModelSerializer):
     artist_ids = serializers.SerializerMethodField()
 
