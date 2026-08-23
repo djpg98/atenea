@@ -6,6 +6,7 @@ from rest_framework import status
 from photography.services.photo_service import PhotoService
 from photography.serializers.photo_serializer import PhotoCreateSerializer, PhotoSerializer
 from photography.exceptions import PhotoNotFound
+from core.exceptions import ArtistNotFound
 
 
 class PhotoListCreateView(APIView):
@@ -22,13 +23,19 @@ class PhotoListCreateView(APIView):
         resource_type_id = data.pop('resource_type_id')
         reference = data.pop('reference')
         reference_type = data.pop('reference_type')
+        artist_ids = data.pop('artist_ids', None)
 
-        photo = self._service.create(
-            resource_type_id=resource_type_id,
-            reference=reference,
-            reference_type=reference_type,
-            **data
-        )
+        try:
+            photo = self._service.create(
+                resource_type_id=resource_type_id,
+                reference=reference,
+                reference_type=reference_type,
+                artist_ids=artist_ids,
+                **data
+            )
+        except ArtistNotFound:
+            return Response({'error': 'One or more artists not found'}, status=status.HTTP_404_NOT_FOUND)
+
         return Response(PhotoSerializer(photo).data, status=status.HTTP_201_CREATED)
 
 

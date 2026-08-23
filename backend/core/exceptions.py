@@ -16,3 +16,11 @@ class ArtistNotFound(Exception):
 
 class CollectionNotFound(Exception):
     pass
+
+
+class CollectionItemNotFound(Exception):
+    pass
+
+
+class CollectionItemAlreadyExists(Exception):
+    pass
