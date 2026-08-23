@@ -1,0 +1,60 @@
+meta {
+  name: core_collections_items_create
+  type: http
+  seq: 12
+  tags: [
+    core
+  ]
+}
+
+post {
+  url: {{url}}/{{version}}/core/collections/:collection_id/items/
+  body: none
+  auth: apikey
+}
+
+params:path {
+  collection_id: 
+}
+
+headers {
+  sessionid: {{apiKey}}
+}
+
+auth:apikey {
+  key: sessionid
+  value: {{apiKey}}
+  placement: header
+}
+
+example {
+  name: 200 Response
+  description: No response body
+  
+  request: {
+    url: {{url}}/{{version}}/core/collections/:collection_id/items/
+    method: POST
+    mode: none
+    params:path: {
+      collection_id: 
+    }
+  
+    headers: {
+      sessionid: {{apiKey}}
+    }
+  }
+  
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: text
+      content: '''
+  
+      '''
+    }
+  }
+}
