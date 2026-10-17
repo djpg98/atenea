@@ -12,6 +12,8 @@ from photography.repositories.photo_repository import PhotoRepository
 from photography.repositories.photo_artist_repository import PhotoArtistRepository
 
 if TYPE_CHECKING:
+    from django.db.models import QuerySet
+
     from photography.models import Photo
 
 
@@ -82,3 +84,9 @@ class PhotoService:
     def delete(self, photo_id: int) -> None:
         registry_id = self._photo_repository.get_registry_id(photo_id=photo_id)
         self._registry_service.delete(registry_id=registry_id)
+
+    def list_all(self) -> QuerySet[Photo]:
+        return self._photo_repository.list_all()
+
+    def list_by_registry_ids(self, registry_ids: list[int]) -> QuerySet[Photo]:
+        return self._photo_repository.list_by_registry_ids(registry_ids=registry_ids)

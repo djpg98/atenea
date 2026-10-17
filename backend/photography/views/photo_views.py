@@ -14,6 +14,10 @@ class PhotoListCreateView(APIView):
         super().__init__(**kwargs)
         self._service = PhotoService()
 
+    def get(self, request: Request) -> Response:
+        photos = self._service.list_all()
+        return Response(PhotoSerializer(photos, many=True).data)
+
     def post(self, request: Request) -> Response:
         serializer = PhotoCreateSerializer(data=request.data)
         if not serializer.is_valid():

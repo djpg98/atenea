@@ -1,5 +1,7 @@
 from typing import Any
 
+from django.db.models import QuerySet
+
 from photography.models import Photo
 from photography.exceptions import PhotoNotFound
 
@@ -35,3 +37,9 @@ class PhotoRepository:
             return Photo.objects.values_list('registry_id', flat=True).get(id=photo_id)
         except Photo.DoesNotExist:
             raise PhotoNotFound(f"Photo {photo_id} not found")
+
+    def list_all(self) -> QuerySet[Photo]:
+        return Photo.objects.all()
+
+    def list_by_registry_ids(self, registry_ids: list[int]) -> QuerySet[Photo]:
+        return Photo.objects.filter(registry_id__in=registry_ids)

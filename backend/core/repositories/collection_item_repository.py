@@ -28,7 +28,9 @@ class CollectionItemRepository:
             raise CollectionItemNotFound(f"CollectionItem {item_id} not found in collection {collection_id}")
 
     def list_by_collection(self, collection_id: int) -> QuerySet[CollectionItem]:
-        return CollectionItem.objects.filter(collection_id=collection_id).order_by('order')
+        return CollectionItem.objects.filter(
+            collection_id=collection_id
+        ).select_related('registry__resource_type').order_by('order')
 
     def get_next_order(self, collection_id: int) -> int:
         last_item = CollectionItem.objects.filter(collection_id=collection_id).order_by('-order').first()
