@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework.request import Request
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -17,6 +18,7 @@ class ResourceTypeListCreateView(APIView):
         resource_types = self._service.list_all()
         return Response(ResourceTypeSerializer(resource_types, many=True).data)
 
+    @extend_schema(request=ResourceTypeSerializer)
     def post(self, request: Request) -> Response:
         serializer = ResourceTypeSerializer(data=request.data)
         if not serializer.is_valid():
@@ -39,6 +41,7 @@ class ResourceTypeDetailView(APIView):
 
         return Response(ResourceTypeSerializer(resource_type).data)
 
+    @extend_schema(request=ResourceTypeSerializer)
     def patch(self, request: Request, resource_type_id: int) -> Response:
         serializer = ResourceTypeSerializer(data=request.data, partial=True)
         if not serializer.is_valid():

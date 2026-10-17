@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework.request import Request
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -17,6 +18,7 @@ class TagListCreateView(APIView):
         tags = self._service.list_all()
         return Response(TagSerializer(tags, many=True).data)
 
+    @extend_schema(request=TagSerializer)
     def post(self, request: Request) -> Response:
         serializer = TagSerializer(data=request.data)
         if not serializer.is_valid():
@@ -39,6 +41,7 @@ class TagDetailView(APIView):
 
         return Response(TagSerializer(tag).data)
 
+    @extend_schema(request=TagSerializer)
     def patch(self, request: Request, tag_id: int) -> Response:
         serializer = TagSerializer(data=request.data, partial=True)
         if not serializer.is_valid():

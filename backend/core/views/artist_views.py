@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework.request import Request
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -17,6 +18,7 @@ class ArtistListCreateView(APIView):
         artists = self._service.list_all()
         return Response(ArtistSerializer(artists, many=True).data)
 
+    @extend_schema(request=ArtistSerializer)
     def post(self, request: Request) -> Response:
         serializer = ArtistSerializer(data=request.data)
         if not serializer.is_valid():
@@ -39,6 +41,7 @@ class ArtistDetailView(APIView):
 
         return Response(ArtistSerializer(artist).data)
 
+    @extend_schema(request=ArtistSerializer)
     def patch(self, request: Request, artist_id: int) -> Response:
         serializer = ArtistSerializer(data=request.data, partial=True)
         if not serializer.is_valid():

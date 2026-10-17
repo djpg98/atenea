@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework.request import Request
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -17,6 +18,7 @@ class CollectionListCreateView(APIView):
         collections = self._service.list_all()
         return Response(CollectionSerializer(collections, many=True).data)
 
+    @extend_schema(request=CollectionSerializer)
     def post(self, request: Request) -> Response:
         serializer = CollectionSerializer(data=request.data)
         if not serializer.is_valid():
@@ -39,6 +41,7 @@ class CollectionDetailView(APIView):
 
         return Response(CollectionSerializer(collection).data)
 
+    @extend_schema(request=CollectionSerializer)
     def patch(self, request: Request, collection_id: int) -> Response:
         serializer = CollectionSerializer(data=request.data, partial=True)
         if not serializer.is_valid():

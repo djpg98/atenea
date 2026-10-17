@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework.request import Request
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -18,6 +19,7 @@ class PhotoListCreateView(APIView):
         photos = self._service.list_all()
         return Response(PhotoSerializer(photos, many=True).data)
 
+    @extend_schema(request=PhotoCreateSerializer)
     def post(self, request: Request) -> Response:
         serializer = PhotoCreateSerializer(data=request.data)
         if not serializer.is_valid():
@@ -60,6 +62,7 @@ class PhotoDetailView(APIView):
 
         return Response(PhotoSerializer(photo).data)
 
+    @extend_schema(request=PhotoUpdateSerializer)
     def patch(self, request: Request, photo_id: int) -> Response:
         serializer = PhotoUpdateSerializer(data=request.data, partial=True)
         if not serializer.is_valid():
