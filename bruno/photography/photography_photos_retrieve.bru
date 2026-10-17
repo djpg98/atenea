@@ -1,20 +1,16 @@
 meta {
   name: photography_photos_retrieve
   type: http
-  seq: 2
+  seq: 1
   tags: [
     photography
   ]
 }
 
 get {
-  url: {{url}}/{{version}}/photography/photos/:photo_id/
+  url: {{url}}/{{version}}/photography/photos/
   body: none
   auth: apikey
-}
-
-params:path {
-  photo_id: 
 }
 
 headers {
@@ -32,13 +28,9 @@ example {
   description: No response body
   
   request: {
-    url: {{url}}/{{version}}/photography/photos/:photo_id/
+    url: {{url}}/{{version}}/photography/photos/
     method: GET
     mode: none
-    params:path: {
-      photo_id: 
-    }
-  
     headers: {
       sessionid: {{apiKey}}
     }
