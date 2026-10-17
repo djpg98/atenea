@@ -1,0 +1,60 @@
+meta {
+  name: photography_photos_destroy
+  type: http
+  seq: 5
+  tags: [
+    photography
+  ]
+}
+
+delete {
+  url: {{url}}/{{version}}/photography/photos/:photo_id/
+  body: none
+  auth: apikey
+}
+
+params:path {
+  photo_id: 
+}
+
+headers {
+  sessionid: {{apiKey}}
+}
+
+auth:apikey {
+  key: sessionid
+  value: {{apiKey}}
+  placement: header
+}
+
+example {
+  name: 204 Response
+  description: No response body
+  
+  request: {
+    url: {{url}}/{{version}}/photography/photos/:photo_id/
+    method: DELETE
+    mode: none
+    params:path: {
+      photo_id: 
+    }
+  
+    headers: {
+      sessionid: {{apiKey}}
+    }
+  }
+  
+  response: {
+    status: {
+      code: 204
+      text: No Content
+    }
+  
+    body: {
+      type: text
+      content: '''
+  
+      '''
+    }
+  }
+}

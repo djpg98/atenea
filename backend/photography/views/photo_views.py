@@ -79,3 +79,11 @@ class PhotoDetailView(APIView):
             return Response({'error': 'One or more tags not found'}, status=status.HTTP_404_NOT_FOUND)
 
         return Response(PhotoSerializer(photo).data)
+
+    def delete(self, request: Request, photo_id: int) -> Response:
+        try:
+            self._service.delete(photo_id=photo_id)
+        except PhotoNotFound:
+            return Response({'error': 'Photo not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(status=status.HTTP_200_OK)
