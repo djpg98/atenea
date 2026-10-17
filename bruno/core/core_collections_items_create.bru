@@ -9,7 +9,7 @@ meta {
 
 post {
   url: {{url}}/{{version}}/core/collections/:collection_id/items/
-  body: none
+  body: json
   auth: apikey
 }
 
@@ -27,6 +27,13 @@ auth:apikey {
   placement: header
 }
 
+body:json {
+  {
+    "registry_id": 0,
+    "order": 0
+  }
+}
+
 example {
   name: 200 Response
   description: No response body
@@ -34,13 +41,20 @@ example {
   request: {
     url: {{url}}/{{version}}/core/collections/:collection_id/items/
     method: POST
-    mode: none
+    mode: json
     params:path: {
       collection_id: 
     }
   
     headers: {
       sessionid: {{apiKey}}
+    }
+  
+    body:json: {
+      {
+        "registry_id": 0,
+        "order": 0
+      }
     }
   }
   

@@ -9,7 +9,7 @@ meta {
 
 post {
   url: {{url}}/{{version}}/core/artists/
-  body: none
+  body: json
   auth: apikey
 }
 
@@ -23,6 +23,15 @@ auth:apikey {
   placement: header
 }
 
+body:json {
+  {
+    "id": 0,
+    "name": "",
+    "nationality": "",
+    "birth_date": ""
+  }
+}
+
 example {
   name: 200 Response
   description: No response body
@@ -30,9 +39,18 @@ example {
   request: {
     url: {{url}}/{{version}}/core/artists/
     method: POST
-    mode: none
+    mode: json
     headers: {
       sessionid: {{apiKey}}
+    }
+  
+    body:json: {
+      {
+        "id": 0,
+        "name": "",
+        "nationality": "",
+        "birth_date": ""
+      }
     }
   }
   

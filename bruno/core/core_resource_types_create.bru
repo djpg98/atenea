@@ -9,7 +9,7 @@ meta {
 
 post {
   url: {{url}}/{{version}}/core/resource-types/
-  body: none
+  body: json
   auth: apikey
 }
 
@@ -23,6 +23,14 @@ auth:apikey {
   placement: header
 }
 
+body:json {
+  {
+    "id": 0,
+    "name": "",
+    "area": "photography"
+  }
+}
+
 example {
   name: 200 Response
   description: No response body
@@ -30,9 +38,17 @@ example {
   request: {
     url: {{url}}/{{version}}/core/resource-types/
     method: POST
-    mode: none
+    mode: json
     headers: {
       sessionid: {{apiKey}}
+    }
+  
+    body:json: {
+      {
+        "id": 0,
+        "name": "",
+        "area": "photography"
+      }
     }
   }
   

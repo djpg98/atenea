@@ -16,6 +16,11 @@ SCHEMA_FILE="$(mktemp -t atenea-openapi-schema).json"
 cd "$BACKEND_DIR"
 uv run python manage.py spectacular --file "$SCHEMA_FILE" --format openapi-json
 
+ENV_BACKUP="$(mktemp -d -t atenea-bruno-env)"
+if [ -d "$OUTPUT_DIR/environments" ]; then
+  mv "$OUTPUT_DIR/environments" "$ENV_BACKUP/environments"
+fi
+
 rm -rf "$OUTPUT_DIR"
 npx --yes @usebruno/cli import openapi \
   --source "$SCHEMA_FILE" \
@@ -24,6 +29,12 @@ npx --yes @usebruno/cli import openapi \
   --collection-format bru
 
 python3 "$REPO_ROOT/scripts/fix_bruno_urls.py" "$OUTPUT_DIR" --api-version "$API_VERSION"
+
+if [ -d "$ENV_BACKUP/environments" ]; then
+  rm -rf "$OUTPUT_DIR/environments"
+  mv "$ENV_BACKUP/environments" "$OUTPUT_DIR/environments"
+fi
+rm -rf "$ENV_BACKUP"
 
 rm -f "$SCHEMA_FILE"
 

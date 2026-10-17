@@ -9,7 +9,7 @@ meta {
 
 patch {
   url: {{url}}/{{version}}/core/collections/:collection_id/items/:item_id/
-  body: none
+  body: json
   auth: apikey
 }
 
@@ -28,6 +28,12 @@ auth:apikey {
   placement: header
 }
 
+body:json {
+  {
+    "order": 0
+  }
+}
+
 example {
   name: 200 Response
   description: No response body
@@ -35,7 +41,7 @@ example {
   request: {
     url: {{url}}/{{version}}/core/collections/:collection_id/items/:item_id/
     method: PATCH
-    mode: none
+    mode: json
     params:path: {
       collection_id: 
       item_id: 
@@ -43,6 +49,12 @@ example {
   
     headers: {
       sessionid: {{apiKey}}
+    }
+  
+    body:json: {
+      {
+        "order": 0
+      }
     }
   }
   

@@ -9,7 +9,7 @@ meta {
 
 patch {
   url: {{url}}/{{version}}/photography/photos/:photo_id/
-  body: none
+  body: json
   auth: apikey
 }
 
@@ -27,6 +27,20 @@ auth:apikey {
   placement: header
 }
 
+body:json {
+  {
+    "artist_ids": [],
+    "tag_ids": [],
+    "reference": "",
+    "reference_type": "url",
+    "title": "",
+    "year": 0,
+    "iso": 0,
+    "lens": "",
+    "camera": ""
+  }
+}
+
 example {
   name: 200 Response
   description: No response body
@@ -34,13 +48,27 @@ example {
   request: {
     url: {{url}}/{{version}}/photography/photos/:photo_id/
     method: PATCH
-    mode: none
+    mode: json
     params:path: {
       photo_id: 
     }
   
     headers: {
       sessionid: {{apiKey}}
+    }
+  
+    body:json: {
+      {
+        "artist_ids": [],
+        "tag_ids": [],
+        "reference": "",
+        "reference_type": "url",
+        "title": "",
+        "year": 0,
+        "iso": 0,
+        "lens": "",
+        "camera": ""
+      }
     }
   }
   

@@ -9,7 +9,7 @@ meta {
 
 post {
   url: {{url}}/{{version}}/photography/photos/
-  body: none
+  body: json
   auth: apikey
 }
 
@@ -23,6 +23,21 @@ auth:apikey {
   placement: header
 }
 
+body:json {
+  {
+    "resource_type_id": 0,
+    "artist_ids": [],
+    "tag_ids": [],
+    "reference": "",
+    "reference_type": "url",
+    "title": "",
+    "year": 0,
+    "iso": 0,
+    "lens": "",
+    "camera": ""
+  }
+}
+
 example {
   name: 200 Response
   description: No response body
@@ -30,9 +45,24 @@ example {
   request: {
     url: {{url}}/{{version}}/photography/photos/
     method: POST
-    mode: none
+    mode: json
     headers: {
       sessionid: {{apiKey}}
+    }
+  
+    body:json: {
+      {
+        "resource_type_id": 0,
+        "artist_ids": [],
+        "tag_ids": [],
+        "reference": "",
+        "reference_type": "url",
+        "title": "",
+        "year": 0,
+        "iso": 0,
+        "lens": "",
+        "camera": ""
+      }
     }
   }
   

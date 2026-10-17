@@ -9,7 +9,7 @@ meta {
 
 post {
   url: {{url}}/{{version}}/core/tags/
-  body: none
+  body: json
   auth: apikey
 }
 
@@ -23,6 +23,13 @@ auth:apikey {
   placement: header
 }
 
+body:json {
+  {
+    "id": 0,
+    "name": ""
+  }
+}
+
 example {
   name: 200 Response
   description: No response body
@@ -30,9 +37,16 @@ example {
   request: {
     url: {{url}}/{{version}}/core/tags/
     method: POST
-    mode: none
+    mode: json
     headers: {
       sessionid: {{apiKey}}
+    }
+  
+    body:json: {
+      {
+        "id": 0,
+        "name": ""
+      }
     }
   }
   

@@ -9,7 +9,7 @@ meta {
 
 patch {
   url: {{url}}/{{version}}/core/artists/:artist_id/
-  body: none
+  body: json
   auth: apikey
 }
 
@@ -27,6 +27,15 @@ auth:apikey {
   placement: header
 }
 
+body:json {
+  {
+    "id": 0,
+    "name": "",
+    "nationality": "",
+    "birth_date": ""
+  }
+}
+
 example {
   name: 200 Response
   description: No response body
@@ -34,13 +43,22 @@ example {
   request: {
     url: {{url}}/{{version}}/core/artists/:artist_id/
     method: PATCH
-    mode: none
+    mode: json
     params:path: {
       artist_id: 
     }
   
     headers: {
       sessionid: {{apiKey}}
+    }
+  
+    body:json: {
+      {
+        "id": 0,
+        "name": "",
+        "nationality": "",
+        "birth_date": ""
+      }
     }
   }
   

@@ -9,7 +9,7 @@ meta {
 
 post {
   url: {{url}}/{{version}}/core/collections/
-  body: none
+  body: json
   auth: apikey
 }
 
@@ -23,6 +23,16 @@ auth:apikey {
   placement: header
 }
 
+body:json {
+  {
+    "id": 0,
+    "name": "",
+    "description": "",
+    "image": "",
+    "featured": false
+  }
+}
+
 example {
   name: 200 Response
   description: No response body
@@ -30,9 +40,19 @@ example {
   request: {
     url: {{url}}/{{version}}/core/collections/
     method: POST
-    mode: none
+    mode: json
     headers: {
       sessionid: {{apiKey}}
+    }
+  
+    body:json: {
+      {
+        "id": 0,
+        "name": "",
+        "description": "",
+        "image": "",
+        "featured": false
+      }
     }
   }
   
