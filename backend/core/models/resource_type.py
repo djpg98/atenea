@@ -4,7 +4,7 @@ from django.db import models
 class ResourceType(models.Model):
     class Area(models.TextChoices):
         PHOTOGRAPHY = 'photography', 'Photography'
-        CINEMA = 'cinema', 'Cinema'
+        MOVIES = 'movies', 'Movies'
         MUSIC = 'music', 'Music'
         COMPUTER_SCIENCE = 'computer_science', 'Computer Science'
         COMICS = 'comics', 'Comics'

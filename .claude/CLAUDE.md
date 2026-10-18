@@ -219,7 +219,7 @@ Toda respuesta HTTP sigue el formato:
 |---|---|---|
 | id | PK | |
 | name | varchar | "photo", "movie", etc. |
-| area | choices | photography, cinema, music, computer_science, comics, general |
+| area | choices | photography, movies, music, computer_science, comics, general |
 
 **`ResourceRegistry`** — registro central de todos los recursos
 
