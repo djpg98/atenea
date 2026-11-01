@@ -343,6 +343,10 @@ Toda respuesta HTTP sigue el formato:
 - **Data fetching / estado de servidor:** TanStack Query (React Query)
 - **Tipos:** interfaces TypeScript escritas a mano (no generadas desde OpenAPI)
 - **Comunicación con el backend:** fetch directo desde el cliente a la API Django (sin proxy de Next.js). Requiere `django-cors-headers` configurado en el backend. La URL base vive en `NEXT_PUBLIC_API_URL`
+- **Lint/formato:** ESLint (`eslint-config-next`, incluye core-web-vitals + reglas TypeScript) + Prettier con configuración default (sin overrides). `eslint-config-prettier` desactiva las reglas de estilo de ESLint que chocarían con Prettier — Prettier es la única fuente de verdad para formato
+  - `npm run lint` — ESLint
+  - `npm run format` / `npm run format:check` — aplica o verifica formato con Prettier
+  - No hay pre-commit hook; se corren manualmente
 
 ### Todo client-side
 
