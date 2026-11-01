@@ -8,7 +8,7 @@ class ResourceRegistryRepository:
 
     def get_by_id(self, registry_id: int) -> ResourceRegistry:
         try:
-            return ResourceRegistry.objects.get(id=registry_id)
+            return ResourceRegistry.objects.select_related('resource_type').get(id=registry_id)
         except ResourceRegistry.DoesNotExist:
             raise ResourceRegistryNotFound(f"ResourceRegistry {registry_id} not found")
 

@@ -6,4 +6,5 @@ from core.models import Collection
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        fields = ['id', 'name', 'description', 'image', 'featured']
+        fields = ['id', 'name', 'description', 'image', 'featured', 'metadata']
+        read_only_fields = ['metadata']

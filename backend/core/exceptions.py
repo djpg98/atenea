@@ -24,3 +24,7 @@ class CollectionItemNotFound(Exception):
 
 class CollectionItemAlreadyExists(Exception):
     pass
+
+
+class InvalidResourceArea(Exception):
+    pass

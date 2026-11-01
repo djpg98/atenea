@@ -6,6 +6,7 @@ class Collection(models.Model):
     description = models.TextField(blank=True, null=True)
     image = models.CharField(max_length=500, blank=True, null=True)
     featured = models.BooleanField(default=False)
+    metadata = models.JSONField(default=dict)
 
     class Meta:
         db_table = 'collection'
