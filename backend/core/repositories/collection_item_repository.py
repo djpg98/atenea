@@ -1,7 +1,7 @@
 from typing import Any
 
 from django.db import IntegrityError, transaction
-from django.db.models import QuerySet
+from django.db.models import Count, F, QuerySet
 
 from core.models import CollectionItem
 from core.exceptions import CollectionItemNotFound, CollectionItemAlreadyExists
@@ -45,3 +45,10 @@ class CollectionItemRepository:
 
     def delete(self, collection_id: int, item_id: int) -> None:
         CollectionItem.objects.filter(id=item_id, collection_id=collection_id).delete()
+
+    def count_by_collection_and_area(self) -> list[dict[str, Any]]:
+        return list(
+            CollectionItem.objects
+            .values('collection_id', area=F('registry__resource_type__area'))
+            .annotate(count=Count('id'))
+        )

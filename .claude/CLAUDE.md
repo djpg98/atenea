@@ -189,6 +189,16 @@ Se usa el sistema de migraciones de Django. Cada app tiene su carpeta `migration
 
 ---
 
+## Comandos personalizados
+
+Management commands de Django (`<app>/management/commands/`). Se corren con `uv run python manage.py <comando>` desde `backend/`.
+
+| Comando | App | Descripción | Flags |
+|---|---|---|---|
+| `reconcile_collection_metadata` | `core` | Recalcula `Collection.metadata` a partir de los `CollectionItem` reales en DB, corrigiendo cualquier drift (ej. si se editó algo a mano en la base) | `--dry-run` — muestra los cambios sin aplicarlos |
+
+---
+
 ## API
 
 - Todas las rutas bajo `/api/v1/`
